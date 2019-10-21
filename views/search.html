@@ -6,9 +6,13 @@
   <script src="./js/jquery.min.js"></script>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="./js/bootstrap.min.js"></script>
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
+<!-- <body style="background-image: linear-gradient(to right, #434343 , #000000);"> -->
+    <body style="background-image: linear-gradient(to right, #000428 , #004e92);">
+  <header>
+    <h2><b>Search CCTNS</b></h2>
+  </header>
 <div id="info">
   <!-- <p id="info_start">Click on the microphone icon and begin speaking.</p>
   <p id="info_speak_now">Speak now.</p>  -->
@@ -38,40 +42,64 @@
 </div> -->
 <!-- <input type="text" class="  search-query form-control" style="padding-left: 20px;" id="input" placeholder="   Search" /> -->
 
-<div class="input-group">
+<div class="input-group" style="padding-left:25%;padding-right: 19%">
     <input type="text" class="  search-query form-control" style="padding-left: 10px;" id="input" placeholder="   Search" />
     <span class="input-group-btn">
         
-        <button class="btn btn-danger" type="button" onclick="callMongo();">
+        <button class="btn btn-primary" type="button" onclick="callMongo();">
             <span class=" glyphicon glyphicon-search" ></span>
         </button>
     </span>
     <button id="start_button" onclick="startButton(event)">
         <img id="start_img" src="mic.gif" alt="Start"></button>
+     <span><a href="#" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-bars"></i></a></span>   
+</div>
 </div>
 
-<!-- <div id="results">
-  <span id="final_span" class="final" contenteditable="true"></span>
-  <span id="interim_span" class="interim" ></span>
-  <p>
-</div> -->
-<p id="interim_text"></p>
-<!-- <div id="div_language">
-    <select id="select_language" onchange="updateCountry()"></select>
-    &nbsp;&nbsp;
-    <select id="select_dialect"></select>
-    &nbsp;&nbsp;
-    &nbsp;&nbsp;
+<p id="interim_text" style="padding-left:25px"></p>
 
-    
-
-  </div> -->
 </div>
-<div id="inputoutput" style="padding-left:5px;padding-right: 5px;padding-top: 5px;padding-bottom:  5px; background:azure">
-    <div id="mqu" style="padding-bottom:  2px; "><textarea class="form-control"  placeholder="MongoDB Query" id="query"  rows="2" ></textarea></div>
-    <textarea class="form-control" id="response" placeholder="Search Result " rows="23"></textarea>
+<div id="inputoutput" style="padding-left:20%;padding-right: 23%;padding-top: 5px;padding-bottom:  5px;">
+    <div id="mqu" style="padding-bottom:  10px; "><textarea class="form-control"  placeholder="MongoDB Query" id="query"  rows="2" style="background: whitesmoke; color:black;"></textarea></div>
+    <!-- <textarea class="form-control" id="response" placeholder="Search Result " rows="23" style="background:white;color:Blue;"></textarea> -->
+    <div id="wrapper" style="height: 600px;background: whitesmoke;overflow: scroll;">
+      <pre id="response1"  style="background:whitesmoke;"></pre>
+   </div> 
    </div>
-<div align="center">
+   
+<!-- <div align="center">
 <button type="button" class="btn btn-primary" onclick="prettyJSON()">Pretty Result</button>
+</div> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Store Query</h5>
+        
+        
+      </div>
+      <div class="modal-body">
+          <h4 class="modal-title" id="msg" style="display:none;align-content: center;color: green"></h5>
+        <div class="form-group">
+          <label for="usr">Question:</label>
+          <input type="text" class="form-control" id="question">
+        </div>
+        <div class="form-group">
+          <label for="comment">Mongo Query:</label>
+          <textarea class="form-control" rows="5" id="querymon" placeholder="Please keep it blank if you are not familier with Mongo query"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="storeQuery();">Save</button>
+      </div>
+    </div>
+  </div>
 </div>
+</body>
+
+
+
 <script src="./js/mongoSearch.js"></script>

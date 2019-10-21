@@ -1,6 +1,25 @@
 * {
     font-family: Verdana, Arial, sans-serif;
   }
+  header {
+    /* background-color: #666; */
+    padding: 10px;
+    text-align: center;
+    font-size: 40px;
+    color: white;
+  }
+  .json-key {
+    color: brown;
+    }
+ .json-value {
+    color: green;
+    }
+ .json-boolean {
+    color: teal;
+    }
+ .json-string {
+    color:rgb(0, 51, 204);
+    }
   a:link {
     color:#000;
     text-decoration: none;

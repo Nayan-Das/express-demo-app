@@ -69,7 +69,36 @@ var langs =
 // updateCountry();
 // select_dialect.selectedIndex = 6;
 showInfo('info_start');
+const prettyPrintJson = {
+  toHtml: (thing) => {
+     const htmlEntities = (string) => {
+        return string
+           .replace(/&/g,   '&amp;')
+           .replace(/\\"/g, '&bsol;&quot;')
+           .replace(/</g,   '&lt;')
+           .replace(/>/g,   '&gt;');
+        };
+     const replacer = (match, p1, p2, p3, p4) => {
+        const part =       { indent: p1, key: p2, value: p3, end: p4 };
+        const key =        '<span class=json-key>';
+        const val =        '<span class=json-value>';
+        const bool =       '<span class=json-boolean>';
+        const str =        '<span class=json-string>';
+        const isBool =     ['true', 'false'].includes(part.value);
+        const valSpan =    /^"/.test(part.value) ? str : isBool ? bool : val;
+        const findName =   /"([\w]+)": |(.*): /;
+        const indentHtml = part.indent || '';
+        const keyHtml =    part.key ? key + part.key.replace(findName, '$1$2') + '</span>: ' : '';
+        const valueHtml =  part.value ? valSpan + part.value + '</span>' : '';
+        const endHtml =    part.end || '';
+        return indentHtml + keyHtml + valueHtml + endHtml;
+        };
+     const jsonLine = /^( *)("[^"]+": )?("[^"]*"|[\w.+-]*)?([{}[\],]*)?$/mg;
+     return htmlEntities(JSON.stringify(thing, null, 3))
+        .replace(jsonLine, replacer);
+     }
 
+  };
 function updateCountry() {
   for (var i = select_dialect.options.length - 1; i >= 0; i--) {
     select_dialect.remove(i);
@@ -224,6 +253,45 @@ function prettyJSON()
 {
    var rd=$("#response").val();
    $("#response").val(JSON.stringify(JSON.parse(rd), null, 2));
+   //$('#response1').html(HighlightedJSON(JSON.parse(rd)));
+   console.log(JSON.parse(rd));
+   //$('#response1').html(prettyPrintJson.toHtml(JSON.parse(rd)));
+   document.getElementById("response1").innerHTML=prettyPrintJson.toHtml(JSON.parse(rd));
+}
+function storeQuery()
+{
+  var ques=$("#question").val();
+  var quer=$("#querymon").val();
+  //var queryText={"question:'"+ques+"','query':'"+quer+"'}";
+  var queryText={"question":ques,"query":quer};
+  console.log(queryText)
+  $.ajax({ 
+    type: "POST",
+    cache: true,
+    url: "http://localhost:5000/storeQuery",
+    data:JSON.stringify(queryText),
+    datatype:"json",
+    contentType: 'application/json',
+    success: function(data){        
+      console.log('Success; ' + data);
+      $("#question").val(" ")
+      $("#querymon").val(" ");
+      $("#msg").show();
+      $("#msg").html(data);
+      
+      setTimeout(function() {
+        $('#msg').fadeOut('slow');
+    }, 2000);
+      
+
+    },
+    error: function (error) {
+       console.log('error; ' + eval(error));
+      
+ }
+ }); 
+
+  //alert("Testing "+quer+" "+ques);
 }
 function callMongo()
          { 
@@ -240,8 +308,9 @@ function callMongo()
                   //console.log("data_arr0 "+data_arr[0]);
                   console.log("data_arr1 "+data_arr[1]);
                   $("#query").val(data_arr[1]);
-                  $("#response").val(data_arr[0].replace(/NaN/g,"\"NaN\""));
-		  
+                // $("#response").val(data_arr[0].replace(/NaN/g,"\"NaN\""));
+                  var rd=data_arr[0].replace(/NaN/g,"\"NaN\"");
+                 document.getElementById("response1").innerHTML=prettyPrintJson.toHtml(JSON.parse(JSON.stringify(JSON.parse(rd), null, 2)));
    		 //$("#response").val(JSON.stringify(JSON.parse(data_arr[0]), null, 2));
                },
                error: function (error) {
